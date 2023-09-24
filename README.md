@@ -41,4 +41,4 @@ The file v3_emitter_of_tasks.py contains the below constants. Review and adjust 
 
 ## Screenshot
 A running example of the emitter and RabbitMQ queue names and respective counters
-![Erin's PC](Module05_screenshot.png)
+![Erin's PC](Module05_Screenshot.png)
