@@ -1,7 +1,7 @@
 """
-Course: 44-671 : Module 05
+Course: 44-671 : Module 05 & Module 06
 Student: Erin Swan-Siegel
-Date: 09-22-2023
+Date: 09-22-2023 & 09-29-2023
 
     This program reads rows from a .csv file and sends the value in each field to their respective queues
     on the RabbitMQ server, representing temperature readings from a smoker and up to two foods.
@@ -20,7 +20,7 @@ import logging
 
 # Configuration Constants
 file_name = "smoker-temps.csv"
-sleep_secs = 30
+sleep_secs = 1
 host = "localhost"
 queue_01 = "01-smoker"
 queue_02 = "02-food-A"

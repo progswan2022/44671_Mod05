@@ -1,27 +1,43 @@
 """
-Course: 44-671 : Module 05
+Course: 44-671 : Module 05 & Module 06
 Student: Erin Swan-Siegel
-Date: 09-22-2023
+Date: 09-22-2023 & 09-29-2023
 
-    This program listens for work messages contiously. 
-    Start multiple versions to add more workers.  
-
-    Author: Denise Case
-    Date: January 15, 2023
+This program listens for work messages related to the smoker, continuously
 
 """
 
 import pika
 import sys
 import time
+import v3_emitter_of_tasks
+
+smoker_analytics = {"Values":[]}
 
 # define a callback function to be called when a message is received
-def callback(ch, method, properties, body):
+def smoker_callback(ch, method, properties, body, arguments = smoker_analytics["Values"]):
     """ Define behavior on getting a message."""
     # decode the binary message body to a string
-    print(f" [x] Received {body.decode()}")
-    # simulate work by sleeping for the number of dots in the message
-    time.sleep(body.count(b"."))
+    print(f" [x] Received reading {body.decode()}°F for smoker")
+    # process data by splitting the values by delimiter
+    data = body.decode().split(',')
+    # assign the smoker temperature value to a variable
+    data_lead = data[1]
+
+    if (len(data_lead) > 0):
+        # delete the oldest temperature value when 5 measurements exist
+
+        if len(arguments) >= 5:
+            arguments.pop(0)
+
+        # append the new smoker temperature value to the smoker_analytics dictionary
+        arguments.append(data_lead)
+
+        # assess the temperature difference between the first and the last values of the list; alert if necessary
+        tempA = arguments[0]
+        if len(arguments) == 5:
+            if float(data_lead) - float(tempA) < -15.0:
+                print(f"ALERT: Temperature of the smoker has decreased from {tempA}°F to {data_lead}°F in 2.5 minutes!!")
     # when done with task, tell the user
     print(" [x] Done.")
     # acknowledge the message was received and processed 
@@ -30,7 +46,7 @@ def callback(ch, method, properties, body):
 
 
 # define a main function to run the program
-def main(hn: str = "localhost", qn: str = "Module04"):
+def main(hn: str = "localhost", qn: str = "DefaultQueue"):
     """ Continuously listen for task messages on a named queue."""
 
     # when a statement can go wrong, use a try-except block
@@ -61,7 +77,7 @@ def main(hn: str = "localhost", qn: str = "Module04"):
         # The QoS level controls the # of messages
         # that can be in-flight (unacknowledged by the consumer)
         # at any given time.
-        # Set the prefetch count to one to limit the number of messages
+        # Set the prefetch count to 1 (one) to limit the number of messages
         # being consumed and processed concurrently.
         # This helps prevent a worker from becoming overwhelmed
         # and improve the overall system performance. 
@@ -71,7 +87,7 @@ def main(hn: str = "localhost", qn: str = "Module04"):
         # configure the channel to listen on a specific queue,  
         # use the callback function named callback,
         # and do not auto-acknowledge the message (let the callback handle it)
-        channel.basic_consume( queue=qn, on_message_callback=callback)
+        channel.basic_consume( queue=qn, on_message_callback=smoker_callback)
 
         # print a message to the console for the user
         print(" [*] Ready for work. To exit press CTRL+C")
@@ -99,5 +115,5 @@ def main(hn: str = "localhost", qn: str = "Module04"):
 # without executing the code below.
 # If this is the program being run, then execute the code below
 if __name__ == "__main__":
-    # call the main function with the information needed
-    main("localhost", "task_queue2")
+    # call the main function, listening to queue 01, with the variables from v3_emitter_of_tasks
+    main(v3_emitter_of_tasks.host, v3_emitter_of_tasks.queue_01)
