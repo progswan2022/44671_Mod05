@@ -46,6 +46,9 @@ The file v3_emitter_of_tasks.py contains the below constants. Review and adjust 
 - Prompt: https://nwmissouri.instructure.com/courses/54849/pages/smart-smoker 
 - Guidance 5.1: https://nwmissouri.instructure.com/courses/54849/pages/module-5-dot-1-guided-producer-design?wrap=1 
 - Guidance 5.2: https://nwmissouri.instructure.com/courses/54849/pages/module-5-dot-2-guided-producer-implementation?wrap=1
+- Guidance 6.1: https://nwmissouri.instructure.com/courses/54849/pages/module-6-dot-1-guided-consumer-design 
+- Guidance 6.2: https://nwmissouri.instructure.com/courses/54849/pages/module-6-dot-2-guided-consumer-implementation 
+- Guidance 6.3: https://nwmissouri.instructure.com/courses/54849/pages/module-6-dot-3-implementing-a-callback-function?wrap=1 
 
 ## Screenshots
 - A running example of the emitter and RabbitMQ queue names and respective counters
